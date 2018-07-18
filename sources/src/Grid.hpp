@@ -26,6 +26,10 @@ class Grid
         return _grid;
     }
 
+    bool thereIsAlreadyANumber(uint8_t y, uint8_t x) {
+        return _grid[y][x];
+    }
+
     // Removes a number in the grid by placing another one at the given (x, y) position
     // If you just want to remove a number, just call this function with number = 0;
     void placeNumber(uint8_t number, uint8_t y, uint8_t x)

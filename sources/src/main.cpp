@@ -52,6 +52,10 @@ int ReadStdin()
             if (!line[0])
             {
                 std::cout << grid << std::endl;
+                auto s = SudokuSolver<RecursiveSolverPolicy>(grid);
+                s.DisplayPossibilities();
+                std::cout << s.resolve() << std::endl;
+                std::cout << grid << std::endl;
             }
             else {
                 ErrorWhileReading("Wrong number of lines in sudoku", i, 0);
@@ -71,5 +75,7 @@ int ReadStdin()
 
 int main(int ac, char **av)
 {
+    //Grid grid;
+
     return ReadStdin();
 }
