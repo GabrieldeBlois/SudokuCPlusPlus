@@ -15,7 +15,7 @@ static void ErrorWhileReading(const std::string &error, int line, int caracter)
         << std::endl;
 }
 
-int ReadLine(Grid &grid, const std::string &line, int lineNb)
+static int ReadLine(Grid &grid, const std::string &line, int lineNb)
 {
     int lineIncr = 0;
     for (; line[lineIncr] && lineIncr < SUDOKU_LINE_LENGTH; ++lineIncr)
@@ -41,7 +41,7 @@ int ReadLine(Grid &grid, const std::string &line, int lineNb)
 int ReadStdin()
 {
     Grid grid;
-    uint8_t i = 0;
+    uint16_t i = 0;
 
     for (std::string line; std::getline(std::cin, line);)
     {
@@ -51,10 +51,10 @@ int ReadStdin()
             // if line[0] == '\0', it means that it's an empty line separating two sudokus
             if (!line[0])
             {
-                std::cout << grid << std::endl;
+                //std::cout << grid << std::endl;
                 auto s = SudokuSolver<RecursiveSolverPolicy>(grid);
-                s.DisplayPossibilities();
-                std::cout << s.resolve() << std::endl;
+                // s.DisplayPossibilities();
+                s.resolve();
                 std::cout << grid << std::endl;
             }
             else {
@@ -66,14 +66,13 @@ int ReadStdin()
 
         if (ReadLine(grid, line, i++))
             continue;
-
         // if here, there was an error in this sudoku line, so jump to the next sudoku if there is one;
     }
-    std::cout << grid << std::endl;
+    // std::cout << grid << std::endl;
     return 0;
 }
 
-int main(int ac, char **av)
+int main()
 {
     //Grid grid;
 

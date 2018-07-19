@@ -3,7 +3,7 @@
 #include <stack>
 #include <utility>
 #include "Grid.hpp"
-typedef std::array<std::array<uint8_t, SUDOKU_LINE_LENGTH>, SUDOKU_FULL_LENGTH> t_SudoPossibilities;
+typedef std::array<std::array<uint16_t, SUDOKU_LINE_LENGTH>, SUDOKU_FULL_LENGTH> t_SudoPossibilities;
 
 class IterativeFastSolverPolicy
 {
@@ -19,13 +19,13 @@ class IterativeFastSolverPolicy
     {
         // First: The index of the cell
         // Second: The index of the current number in the _possibilities array
-        std::stack<std::pair<uint8_t, uint8_t>> stack;
+        std::stack<std::pair<uint16_t, uint16_t>> stack;
 
-        uint8_t possibleNbsIndex = 0;
+        uint16_t possibleNbsIndex = 0;
 
         bool found = false;
         // iterate through all the grid
-        for (uint8_t i = 0; i < SUDOKU_FULL_LENGTH;)
+        for (uint16_t i = 0; i < SUDOKU_FULL_LENGTH;)
         {
 
             // if there are no multiple choice for this cell,
@@ -90,13 +90,13 @@ class RecursiveSolverPolicy
     {
     }
 
-    bool algo(uint8_t index)
+    bool algo(uint16_t index)
     {
         for (; index < SUDOKU_FULL_LENGTH && !_possibilities[index][0]; ++index)
             ;
         if (index == SUDOKU_FULL_LENGTH)
             return true;
-        for (uint8_t i = 0; i < SUDOKU_LINE_LENGTH; ++i)
+        for (uint16_t i = 0; i < SUDOKU_LINE_LENGTH; ++i)
         {
             if (_grid.doesANumberFitInThisPlace(_possibilities[index][i], index / SUDOKU_LINE_LENGTH, index % SUDOKU_LINE_LENGTH))
             {
@@ -125,16 +125,16 @@ class SudokuSolver : private SolverPolicy
   public:
     SudokuSolver(Grid &grid) : SolverPolicy(grid, _possibilities), _grid(grid)
     {
-        for (uint8_t y = 0, inlineIncr = 0; y < SUDOKU_LINE_LENGTH; ++y)
+        for (uint16_t y = 0, inlineIncr = 0; y < SUDOKU_LINE_LENGTH; ++y)
         {
-            for (uint8_t x = 0; x < SUDOKU_LINE_LENGTH; ++x, ++inlineIncr)
+            for (uint16_t x = 0; x < SUDOKU_LINE_LENGTH; ++x, ++inlineIncr)
             {
-                uint8_t matchNb = 0;
+                uint16_t matchNb = 0;
 
                 if (grid.thereIsAlreadyANumber(y, x))
                     continue;
 
-                for (uint8_t i = 1; i < SUDOKU_LINE_LENGTH + 1; ++i)
+                for (uint16_t i = 1; i < SUDOKU_LINE_LENGTH + 1; ++i)
                 {
                     if (grid.doesANumberFitInThisPlace(i, y, x))
                     {
@@ -148,7 +148,7 @@ class SudokuSolver : private SolverPolicy
                 // place it in the grid and do not display it as a possibility
                 if (matchNb == 1)
                 {
-                    grid.placeNumber(_possibilities[inlineIncr][matchNb], y, x);
+                    grid.placeNumber(_possibilities[inlineIncr][matchNb - 1], y, x);
                     _possibilities[inlineIncr][0] = 0;
                 }
             }
