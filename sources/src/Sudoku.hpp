@@ -66,10 +66,10 @@ class IterativeFastSolverPolicy
                 return false;
 
             // if there is no solution for the given context -> backtrack
+            _grid.placeNumber(0, i / SUDOKU_LINE_LENGTH, i % SUDOKU_LINE_LENGTH);
             auto last = stack.top();
             i = last.first;
             stack.pop();
-
             // we don't want to test the last number, let's try the next one
             possibleNbsIndex = last.second + 1;
         }
@@ -92,19 +92,26 @@ class RecursiveSolverPolicy
 
     bool algo(uint16_t index)
     {
+        // static int incr = 0;
+        // incr++;
         for (; index < SUDOKU_FULL_LENGTH && !_possibilities[index][0]; ++index)
             ;
-        if (index == SUDOKU_FULL_LENGTH)
+        if (index == SUDOKU_FULL_LENGTH) {
             return true;
-        for (uint16_t i = 0; i < SUDOKU_LINE_LENGTH; ++i)
+        }
+        // std::cout << (int)incr << std::endl;
+        int x = index % SUDOKU_LINE_LENGTH;
+        int y = index / SUDOKU_LINE_LENGTH;
+        for (uint16_t i = 0; i < SUDOKU_LINE_LENGTH && _possibilities[index][i]; ++i)
         {
-            if (_grid.doesANumberFitInThisPlace(_possibilities[index][i], index / SUDOKU_LINE_LENGTH, index % SUDOKU_LINE_LENGTH))
+            if (_grid.doesANumberFitInThisPlace(_possibilities[index][i], y, x))
             {
-                _grid.placeNumber(_possibilities[index][i], index / SUDOKU_LINE_LENGTH, index % SUDOKU_LINE_LENGTH);
+                _grid.placeNumber(_possibilities[index][i], y, x);
                 if (algo(index + 1))
                     return true;
             }
         }
+        _grid.placeNumber(0, y, x);
         return false;
     }
 

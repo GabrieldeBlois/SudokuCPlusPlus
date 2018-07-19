@@ -42,7 +42,6 @@ int ReadStdin()
 {
     Grid grid;
     uint16_t i = 0;
-
     for (std::string line; std::getline(std::cin, line);)
     {
         // check the number of line read
@@ -54,7 +53,7 @@ int ReadStdin()
                 //std::cout << grid << std::endl;
                 auto s = SudokuSolver<RecursiveSolverPolicy>(grid);
                 // s.DisplayPossibilities();
-                s.resolve();
+                std::cout << s.resolve() << std::endl;
                 std::cout << grid << std::endl;
             }
             else {
