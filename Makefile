@@ -2,9 +2,9 @@ NAME	= solver
 
 BINPATH	=	./bin/
 
-CC	= g++ -g
+CC	= g++
 
-CXX = g++ -g
+CXX = g++
 
 RM	= rm -f
 
@@ -13,7 +13,7 @@ SRCS	= ./sources/src/main.cpp
 OBJS	= $(SRCS:.cpp=.o)
 
 CPPFLAGS = -I./sources/include
-CPPFLAGS += -Wall -Wextra -std=c++17
+CPPFLAGS += -Wall -Wextra -std=c++17 -O2
 
 
 

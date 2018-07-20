@@ -16,8 +16,8 @@ class Grid
     {
     }
 
-    ~Grid() {
-
+    ~Grid()
+    {
     }
 
     // Returns the grid
@@ -26,8 +26,45 @@ class Grid
         return _grid;
     }
 
-    bool thereIsAlreadyANumber(uint16_t y, uint16_t x) {
+    bool thereIsAlreadyANumber(uint16_t y, uint16_t x)
+    {
         return _grid[y][x];
+    }
+
+    void clearGrid() {
+        
+        for(size_t i = 0; i < SUDOKU_LINE_LENGTH; i++)
+        {
+            
+            
+            for(size_t j = 0; j < SUDOKU_LINE_LENGTH; j++)
+            {
+                placeNumber(0, i, j);
+            }
+        }
+
+        /*std::cout << "CLEAR checking: " << std::endl;
+
+        std::cout << "cols: ";
+        for(size_t i = 0; i < SUDOKU_LINE_LENGTH; i++)
+        {
+            std::cout << _cols[i] << ", ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "lines: ";
+        for(size_t i = 0; i < SUDOKU_LINE_LENGTH; i++)
+        {
+            std::cout << _lines[i] << ", ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "lines: ";
+        for(size_t i = 0; i < SUDOKU_LINE_LENGTH; i++)
+        {
+            std::cout << _lines[i] << ", ";
+        }
+        std::cout << std::endl;*/
     }
 
     // Removes a number in the grid by placing another one at the given (x, y) position
@@ -63,15 +100,15 @@ class Grid
         _cols[x] |= bNumber;
     }
 
-    void printAllSuitableNumberForAPos(uint16_t n, uint16_t y, uint16_t x) const {
+    void printAllSuitableNumberForAPos(uint16_t n, uint16_t y, uint16_t x) const
+    {
         // std::cout << "All suitable number for pos: y = " << (int)y << ", x = " << (int)x << ", are: ";
-        for(uint16_t i = 0; i < SUDOKU_LINE_LENGTH; i++)
+        for (uint16_t i = 0; i < SUDOKU_LINE_LENGTH; i++)
         {
             if (doesANumberFitInThisPlace(n, y, x))
                 std::cout << (int)i << ", ";
         }
         std::cout << std::endl;
-        
     }
 
     // Determine if a Number fits according to columns, lines and squares
@@ -93,14 +130,14 @@ class Grid
         return !(_cols[x] & bNumber);
     }
 
-bool doesANumberFitInThisLine(uint16_t number, uint16_t y) const
+    bool doesANumberFitInThisLine(uint16_t number, uint16_t y) const
     {
         // get the binary form from the number
         unsigned int bNumber = 1 << (number - 1);
         return !(_lines[y] & bNumber);
     }
-    
-bool doesANumberFitInThisSquare(uint16_t number, uint16_t y, uint16_t x) const
+
+    bool doesANumberFitInThisSquare(uint16_t number, uint16_t y, uint16_t x) const
     {
         // get the binary form from the number
         unsigned int bNumber = 1 << (number - 1);
@@ -108,7 +145,6 @@ bool doesANumberFitInThisSquare(uint16_t number, uint16_t y, uint16_t x) const
     }
 
   private:
-
     typedef unsigned int _t_BFlags;
     typedef std::array<_t_BFlags, SUDOKU_LINE_LENGTH> _t_GridLineColsSquareBFlags;
 
@@ -126,14 +162,39 @@ bool doesANumberFitInThisSquare(uint16_t number, uint16_t y, uint16_t x) const
 
 std::ostream &operator<<(std::ostream &os, const Grid &grid)
 {
-    for (auto l : grid.getGrid())
+    /*for (auto l : grid.getGrid())
     {
         for (auto c : l)
         {
-            os << ((char)((c == 0) ? '.' : (int)c + '0'));
+            os << ((char)((c == 0) ? '.' : (int)c + '0')) << " ";
         }
         os << std::endl;
+    }*/
+
+    for (size_t i = 0; i < SUDOKU_LINE_LENGTH; ++i)
+    {
+
+        if (i % SUDOKU_BLOCK_LENGTH == 0)
+        {
+            for (size_t j = 0; j < SUDOKU_LINE_LENGTH *2 + 4; ++j)
+            {
+                os << "_";
+            }
+            os << std::endl;
+        }
+        for (size_t j = 0; j < SUDOKU_LINE_LENGTH; ++j)
+        {
+            if (j % SUDOKU_BLOCK_LENGTH == 0)
+                os << "|";
+            os << ((char)((grid.getGrid()[i][j] == 0) ? '.' : (int)grid.getGrid()[i][j] + '0')) << " ";
+        }
+        os << "|" << std::endl;
     }
+        for (size_t j = 0; j < (SUDOKU_LINE_LENGTH << 1) + 4; ++j)
+            {
+                os << "_";
+            }
+            os << std::endl;
 
     return os;
 }

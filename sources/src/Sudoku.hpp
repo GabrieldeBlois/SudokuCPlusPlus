@@ -27,6 +27,7 @@ class IterativeFastSolverPolicy
         // iterate through all the grid
         for (uint16_t i = 0; i < SUDOKU_FULL_LENGTH;)
         {
+                found = false;
 
             // if there are no multiple choice for this cell,
             // it means that the current number is the right one
@@ -58,7 +59,6 @@ class IterativeFastSolverPolicy
             // if the suitable number has been found for this cell, we don't wanna backtrack
             if (found)
             {
-                found = false;
                 ++i;
                 continue;
             }

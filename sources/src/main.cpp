@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <chrono>
 #include <array>
 #include "Sudoku.hpp"
 
@@ -38,6 +39,26 @@ static int ReadLine(Grid &grid, const std::string &line, int lineNb)
     return true;
 }
 
+void launchResolution(Grid &grid)
+{
+    std::cout << "::::::: BEFORE :::::::" << std::endl;
+    std::cout << grid << std::endl;
+    auto begin = std::chrono::steady_clock::now();
+    //std::cout << grid << std::endl;
+    auto s = SudokuSolver<RecursiveSolverPolicy>(grid);
+    // s.DisplayPossibilities();
+    auto result = s.resolve();
+    auto end= std::chrono::steady_clock::now();
+    std::cout << ((result) ? "Resolution succeeded" : "Resolution failed") << std::endl;
+    std::cout<< std::fixed;
+    // std::cout<< setprecision(20)<< f;
+    std::cout << "Resolved in: " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / 1000000000.0 << " seconds" << std::endl;
+    std::cout << grid;
+    std::cout << "- - - - - - - - - - - -" << std::endl;
+    grid.clearGrid();
+
+}
+
 int ReadStdin()
 {
     Grid grid;
@@ -50,13 +71,10 @@ int ReadStdin()
             // if line[0] == '\0', it means that it's an empty line separating two sudokus
             if (!line[0])
             {
-                //std::cout << grid << std::endl;
-                auto s = SudokuSolver<IterativeFastSolverPolicy>(grid);
-                // s.DisplayPossibilities();
-                std::cout << s.resolve() << std::endl;
-                std::cout << grid << std::endl;
+                launchResolution(grid);
             }
-            else {
+            else
+            {
                 ErrorWhileReading("Wrong number of lines in sudoku", i, 0);
             }
             i = 0;
