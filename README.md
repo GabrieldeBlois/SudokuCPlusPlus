@@ -1,8 +1,10 @@
 # SudokuCPlusPlus
-An implementation of an optimized sudoku in c++
+An implementation of an optimized sudoku solver and generator in c++
 
 One of my first school project in university was to create a sudoku in C. I remember that in the worst case scenario (the sudoku grid named "worstcase.txt") my solver took like more than one second to solve it.
 So I wanted to recode a sudoku solver in C++ now (three years later) and see what i've learnt.
+
+This project has no real utility since there are a lot of sudoku solver on the net by now. I just wanted to try to make something faster :D
 
 If you want to optimize it more, feel free !!
 
