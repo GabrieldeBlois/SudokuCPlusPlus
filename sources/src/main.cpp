@@ -5,6 +5,7 @@
 #include "SudokuSolver.hpp"
 #include "IterativeSolvingPolicy.hpp"
 #include "RecursiveSolvingPolicy.hpp"
+#include "GenerationPolicy.hpp"
 
 static void ErrorWhileReading(const std::string &error, int line, int caracter)
 {
@@ -45,7 +46,7 @@ void launchResolution(Grid &grid)
     std::cout << "::::::: BEFORE :::::::" << std::endl;
     std::cout << grid << std::endl;
     auto begin = std::chrono::steady_clock::now();
-    auto s = SudokuSolver<RecursiveSolverPolicy>(grid);
+    auto s = SudokuSolver<RecursiveSolvingPolicy>(grid);
     // s.DisplayPossibilities();
     auto result = s.resolve();
     auto end= std::chrono::steady_clock::now();
@@ -94,9 +95,37 @@ int ReadStdin()
     return 0;
 }
 
-int main()
+void generationChosen()
 {
-    //Grid grid;
+    std::cout << ":::: SUDOKU GENERATION ::::" << std::endl;
 
+    // creation of the grid instance;
+    Grid grid;
+
+    // creation of generation instance
+    auto s = SudokuSolver<GenerationPolicy>(grid);
+
+    // get the current time before launching the generation
+    auto begin = std::chrono::steady_clock::now();
+
+    // launches the resolution
+    s.resolve();
+
+    // get the current time to calculate the diff (end - begin)
+    auto end= std::chrono::steady_clock::now();
+
+    // Notify the user of the generation time
+    std::cout << "Created in: " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / 1000000000.0 << " seconds" << std::endl;
+
+    launchResolution(grid);    
+}
+
+int main(int ac, char **av)
+{
+    (void)av;
+    if (ac > 1) {
+        generationChosen();
+        return 0;
+    }
     return ReadStdin();
 }

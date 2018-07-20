@@ -16,6 +16,15 @@ class Grid
     {
     }
 
+    Grid(const Grid& other) : 
+    _grid(t_SudokuGrid(other.getGrid())),
+    _squares(other._squares),
+    _lines(other._lines),
+    _cols(other._cols)
+     {
+
+    }
+
     ~Grid()
     {
     }
@@ -148,6 +157,7 @@ class Grid
     typedef unsigned int _t_BFlags;
     typedef std::array<_t_BFlags, SUDOKU_LINE_LENGTH> _t_GridLineColsSquareBFlags;
 
+    t_SudokuGrid _grid{};
     // all the squares from the top left one to the right bottom
     _t_GridLineColsSquareBFlags _squares{};
 
@@ -157,7 +167,6 @@ class Grid
     // all the columns from top to bottom
     _t_GridLineColsSquareBFlags _cols{};
 
-    t_SudokuGrid _grid{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Grid &grid)

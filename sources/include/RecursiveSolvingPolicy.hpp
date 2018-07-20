@@ -2,10 +2,10 @@
 
 #include "SudokuSolver.hpp"
 
-class RecursiveSolverPolicy
+class RecursiveSolvingPolicy
 {
   public:
-    RecursiveSolverPolicy(Grid &grid, t_SudoPossibilities &sp) : _grid(grid),
+    RecursiveSolvingPolicy(Grid &grid, t_SudoPossibilities &sp) : _grid(grid),
                                                                  _possibilities(sp)
     {
     }
