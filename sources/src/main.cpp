@@ -51,7 +51,7 @@ int ReadStdin()
             if (!line[0])
             {
                 //std::cout << grid << std::endl;
-                auto s = SudokuSolver<RecursiveSolverPolicy>(grid);
+                auto s = SudokuSolver<IterativeFastSolverPolicy>(grid);
                 // s.DisplayPossibilities();
                 std::cout << s.resolve() << std::endl;
                 std::cout << grid << std::endl;

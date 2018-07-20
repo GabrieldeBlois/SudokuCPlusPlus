@@ -58,6 +58,7 @@ class IterativeFastSolverPolicy
             // if the suitable number has been found for this cell, we don't wanna backtrack
             if (found)
             {
+                found = false;
                 ++i;
                 continue;
             }

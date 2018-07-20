@@ -46,7 +46,6 @@ class Grid
             _cols[x] ^= oldNumber;
         }
 
-
         // put the number in the grid
         _grid[y][x] = number;
         // std::cout << " y = " << (int)y << ", x = " << (int)x << " = " << (int)_grid[y][x] << std::endl;
