@@ -2,7 +2,9 @@
 #include <string>
 #include <chrono>
 #include <array>
-#include "Sudoku.hpp"
+#include "SudokuSolver.hpp"
+#include "IterativeSolvingPolicy.hpp"
+#include "RecursiveSolvingPolicy.hpp"
 
 static void ErrorWhileReading(const std::string &error, int line, int caracter)
 {
@@ -28,7 +30,6 @@ static int ReadLine(Grid &grid, const std::string &line, int lineNb)
             return false;
         }
         // fill the grid with the read numbers
-        //grid[lineNb][lineIncr] = (c == '.') ? 0 : c - '0';
         grid.placeNumber((c == '.') ? 0 : c - '0', lineNb, lineIncr);
     }
     if (lineIncr != 9)
@@ -44,19 +45,23 @@ void launchResolution(Grid &grid)
     std::cout << "::::::: BEFORE :::::::" << std::endl;
     std::cout << grid << std::endl;
     auto begin = std::chrono::steady_clock::now();
-    //std::cout << grid << std::endl;
     auto s = SudokuSolver<RecursiveSolverPolicy>(grid);
     // s.DisplayPossibilities();
     auto result = s.resolve();
     auto end= std::chrono::steady_clock::now();
+    // display the solving result
     std::cout << ((result) ? "Resolution succeeded" : "Resolution failed") << std::endl;
+    
+    // avoid to cout float as scientific notation
     std::cout<< std::fixed;
-    // std::cout<< setprecision(20)<< f;
+
+    // cout solving duration
     std::cout << "Resolved in: " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / 1000000000.0 << " seconds" << std::endl;
+    
+    // cout the solved grid
     std::cout << grid;
     std::cout << "- - - - - - - - - - - -" << std::endl;
     grid.clearGrid();
-
 }
 
 int ReadStdin()
